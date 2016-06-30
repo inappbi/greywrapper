@@ -100,37 +100,7 @@
             </div>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell" style="color: #d9534f;"></i></a>
-                <ul class="dropdown-menu message-dropdown">
-                    <li class="message-preview">
-                        <a href="#">
-                            <div class="media"> <span class="pull-left"> <i class="fa fa-bar-chart alert-icon" aria-hidden="true"></i> </span>
-                                <div class="media-body">
-                                    <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 8:32 PM</p>
-                                    <p>Total Sales 10% up from last month (Some some icons in the text)</p>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="message-preview">
-                        <a href="#">
-                            <div class="media"> <span class="pull-left"> <i class="fa fa-line-chart alert-icon" aria-hidden="true"></i> </span>
-                                <div class="media-body">
-                                    <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 11:32 AM</p>
-                                    <p>Profit this month is $23,230 up by 5% since last month</p>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="message-preview">
-                        <a href="#">
-                            <div class="media"> <span class="pull-left"> <i class="fa fa-pie-chart alert-icon" aria-hidden="true"></i> </span>
-                                <div class="media-body">
-                                    <p class="small text-muted"><i class="fa fa-clock-o"></i> 1 Day to go</p>
-                                    <p>Your best performing store is <bold>Thrift Store</bold>They are consistently performing in 1st place for the last three months</p>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
+                <ul class="dropdown-menu message-dropdown" id="alertList">
                 </ul>
             </li>
             <li class="dropdown">
@@ -147,7 +117,7 @@
         <div class="collapse navbar-collapse navbar-ex1-collapse" ng-show="showLeftSide">
             <ul class="nav navbar-nav side-nav">
                 <li class="active">
-                    <a href="#" onclick="showHome()"><i class="fa fa-building-o fa-postion"></i> Home</a>
+                    <a href="#" onclick="updateViz('sample.HomeDashboard')"><i class="fa fa-building-o fa-postion"></i> Home</a>
                 </li>
                 <li class=""> <a href="#" onclick="showDashboardCompile()"><i class="fa fa-desktop fa-postion"></i>My Dashboard</a> </li>
                 <li class="">
@@ -167,38 +137,6 @@
 
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell" style="color: #d9534f;"></i></a>
-                <ul class="dropdown-menu message-dropdown">
-                    <li class="message-preview">
-                        <a href="#">
-                            <div class="media"> <span class="pull-left"> <i class="fa fa-bar-chart alert-icon" aria-hidden="true"></i> </span>
-                                <div class="media-body">
-                                    <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 8:32 PM</p>
-                                    <p>Total Sales 10% up from last month (Some some icons in the text)</p>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="message-preview">
-                        <a href="#">
-                            <div class="media"> <span class="pull-left"> <i class="fa fa-line-chart alert-icon" aria-hidden="true"></i> </span>
-                                <div class="media-body">
-                                    <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 11:32 AM</p>
-                                    <p>Profit this month is $23,230, up by 5% since last month</p>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="message-preview">
-                        <a href="#">
-                            <div class="media"> <span class="pull-left"> <i class="fa fa-pie-chart alert-icon" aria-hidden="true"></i> </span>
-                                <div class="media-body">
-                                    <p class="small text-muted"><i class="fa fa-clock-o"></i> 1 Day to go</p>
-                                    <p>Your best performig store is <bold>Thrift Store.</bold>They are consistently perfoming in 1st place for the last three months</p>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
             </li>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <span class="appname" ></span></a>
@@ -231,6 +169,8 @@
 
 <!-- jQuery -->
 <script src="https://lil.inappbi.com/inappbi/scripts/inappbi.js?_dc=v0.03"></script>
+<!--<script src="http://localhost:9000/scripts/ext/inAppBIWrapper.js"></script>-->
+
 <script>
         var inAppBIWrapper = null;
 
@@ -250,7 +190,7 @@
                         '       {{name}}</li>' +
                         '   </a>' +
                         '{{/each}}';
-                var html = ebi.Util.evalHandlebarTemplate(template, response.data, response.initParams);
+                var html = InAppBIUtils.evalHandlebarTemplate(template, response.data, response.initParams);
                 $('#vizList').html(html);
             });
 
@@ -263,10 +203,35 @@
                         '       </a> ' +
                         '   </li>' +
                         '{{/each}} ';
-                var html = ebi.Util.evalHandlebarTemplate(template, response.data);
+                var html = InAppBIUtils.evalHandlebarTemplate(template, response.data);
                 $('#dataModelList').html(html);
             });
-            showHome();
+
+            // Render list of alerts
+            inAppBIWrapper.getAlerts(function(response){
+                var template = '{{#each this}}' +
+                        '   <li class="message-preview"> ' +
+                        '       <a href="#"> ' +
+                        '           <div class="media"> <span class="pull-left"> <i class="fa fa-{{type}}-chart alert-icon" aria-hidden="true"></i> </span> ' +
+                        '               <div class="media-body"> ' +
+                        '                   <p class="small text-muted"><i class="fa fa-clock-o"></i> {{date}}</p> ' +
+                        '                   <p>{{message}}</p> ' +
+                        '               </div> ' +
+                        '           </div> ' +
+                        '       </a> ' +
+                        '   </li>' +
+                        '{{/each}} ';
+                var html = InAppBIUtils.evalHandlebarTemplate(template, response);
+                $('#alertList').html(html);
+            })
+            updateViz('sample.HomeDashboard');
+        }
+
+        // Login related JS specific for the shell site
+        if(!InAppBIUtils.getAuthToken() || !InAppBIUtils.getApiEndPoint()){
+            $('#loginModal').modal('show');
+        }else{
+            inAppBIWrapper = new InAppBIWrapper({ apiEndPoint: InAppBIUtils.getApiEndPoint()}, initShellSite, logout);
         }
 
         function updateViz(name) {
@@ -280,33 +245,26 @@
         function showDashboardCompile() {
             $('#tpl').show();
             $('#adhocEditor').hide();
-            var homeDashboardName = 'HomeDashboard';
+            ga('send', 'event', location.href, 'play', 'MyDash');
+
+            //Display dashboard compile screen
             var homeDashboard = new inappbi.DashboardRenderer({
-                name: homeDashboardName,
+                name: 'HomeDashboard',
                 pkg: 'root',
                 visualizationType: 'Dashboard',
                 dashboardLayout: []
             }, inAppBIWrapper);
             homeDashboard.render('tpl');
-            ga('send', 'event', location.href, 'play', 'MyDash');
         }
 
         function showAdhocEditor(id) {
             $('#tpl').hide();
-            $('#adhocEditorFrame').attr('src', ebi.Util.getApiEndPoint() + '/#/app/adhoceditor/' + id + '//true/'+ ebi.Util.getAuthToken().replace('"','').replace('"',''));
+            $('#adhocEditorFrame').attr('src', InAppBIUtils.getApiEndPoint() + '/#/app/adhoceditor/' + id + '//true/'+ InAppBIUtils.getAuthToken().replace('"','').replace('"',''));
             $('#adhocEditor').show();
             ga('send', 'event', location.href, 'play', 'Adhoc');
         }
 
-        // Login related JS specific for the shell site
-        if(!ebi.Util.getAuthToken() || ebi.Util.getAuthToken() === 'null' || !ebi.Util.getApiEndPoint()){
-            $('#loginModal').modal('show');
-        }else{
-            inAppBIWrapper = new InAppBIWrapper({
-                apiEndPoint: ebi.Util.getApiEndPoint()
-            }, initShellSite, logout);
-        }
-
+        // Login/Logout buttons
         $('#loginButton').click(function (event) {
             var data = $('#loginForm').serializeArray().reduce(function (obj, item) {
                 obj[item.name] = item.value;
@@ -331,23 +289,17 @@
                     },logout);
         });
 
-
         function logout(){
             $('#wrapper').hide();
             $('#loginModal').modal('show');
             inAppBIWrapper.destroy();
         }
+        $('.logoutButton').click(logout);
 
         //Other utility functions
         function toggleLeftSide() {
             $('.collapse').hide();
         }
-
-        function showHome(){
-            updateViz('sample.HomeDashboard');
-        }
-
-        $('.logoutButton').click(logout);
 
         $('.close-overlay').click(function(){
             $('.overly-bg').hide();
@@ -360,7 +312,7 @@
             }
         });
 
-
+        //Ignore: google analytics code
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
                     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
                 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -368,7 +320,6 @@
 
         ga('create', 'UA-64214012-3', 'auto');
         ga('send', 'pageview');
-
 </script>
 </body>
 </html>
