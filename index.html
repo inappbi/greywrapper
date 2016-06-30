@@ -34,13 +34,9 @@
                     <div class="input-group m-v-sm"> <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                         <input id="password" type="password" class="form-control" name="password" placeholder="Password" value="demopwd">
                     </div>
-                    <div class="checkbox text-left col-xs-6 no-padding-h">
-                        <label>
-                            <input type="checkbox">Remember me ?
-                        </label>
-                    </div>
                     <!--<div class="help-block text-right col-xs-6 no-padding-h"><a href="">Forget the password ?</a></div>-->
                     <div class="row no-margin">
+                        <br/>
                         <button type="button" class="btn btn-info col-xs-12 p-v-sm" id="loginButton">Login </button><br>
                     </div>
                 </form>
@@ -49,7 +45,7 @@
                 <!--<button type="button" class="btn btn-info" id="createAccount">Create account</button>-->
             </div>
         </div>
-        <h5 class="text-black-lt text-center m-v-md font-thin">©2016 Copyright Dynamic admin. All right reserved !!!</h5>
+        <h5 class="text-black-lt text-center m-v-md font-thin">©2016 Copyright InAppBI admin. All right reserved !!!</h5>
     </div>
 </div>
 <div id="wrapper" style="display: none;">
@@ -235,7 +231,6 @@
 <!-- jQuery -->
 <script src="https://lil.inappbi.com/inappbi/scripts/inappbi.js?_dc=v0.03"></script>
 <script>
-
         var inAppBIWrapper = null;
 
         // Will initialize the shell site, showing the left menu items and the top menu items
@@ -308,7 +303,7 @@
         }else{
             inAppBIWrapper = new InAppBIWrapper({
                 apiEndPoint: ebi.Util.getApiEndPoint()
-            }, initShellSite);
+            }, initShellSite, logout);
         }
 
         $('#loginButton').click(function (event) {
@@ -332,14 +327,15 @@
                         $('#wrapper').show();
                     }, function(error){
                         console.log('Error : '+ error);
-                    });
+                    },logout);
         });
 
-        $('.logoutButton').click(function(event){
+
+        function logout(){
             $('#wrapper').hide();
             $('#loginModal').modal('show');
             inAppBIWrapper.destroy();
-        });
+        }
 
         //Other utility functions
         function toggleLeftSide() {
@@ -349,6 +345,8 @@
         function showHome(){
             updateViz('sample.HomeDashboard');
         }
+
+        $('.logoutButton').click(logout);
 
         $('.close-overlay').click(function(){
             $('.overly-bg').hide();

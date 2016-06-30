@@ -356,7 +356,7 @@ ul.alert-dropdown {
 }
 
 .modal-backdrop {
-    background-color: #999;
+    background-color: rgb(28, 105, 193);
 }
 
 .m-v-xs {
@@ -821,5 +821,4 @@ overflow-y:hidden;
 
 .text-success {
     color: #3aab9c;
->>>>>>> 5a64712e16b8056907fdbf7b2878d6e39cef7cb5
 }
