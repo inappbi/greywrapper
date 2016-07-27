@@ -30,10 +30,10 @@
                         <input id="domain" type="text" class="form-control" name="domain" placeholder="Domain" value="demo">
                     </div>
                     <div class="input-group m-v-sm"> <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                        <input id="username" type="text" class="form-control" name="username" placeholder="User Name"  value="ebiadmin">
+                        <input id="username" type="text" class="form-control" name="username" placeholder="User Name"  value="demouser">
                     </div>
                     <div class="input-group m-v-sm"> <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                        <input id="password" type="password" class="form-control" name="password" placeholder="Password" value="3bi@lil">
+                        <input id="password" type="password" class="form-control" name="password" placeholder="Password" value="demopwd">
                     </div>
                     <!--<div class="help-block text-right col-xs-6 no-padding-h"><a href="">Forget the password ?</a></div>-->
                     <div class="row no-margin">
@@ -265,7 +265,8 @@
 
         function showAdhocEditor(id) {
             $('#tpl').hide();
-            $('#adhocEditorFrame').attr('src',  'http://localhost:9000/#/app/adhoceditor/' + id + '//true/'+ InAppBIUtils.getAuthToken().replace('"','').replace('"',''));
+            $('#adhocEditorFrame').attr('src', ebi.Util.getApiEndPoint() + '/#/app/adhoceditor/' + id + '//true/'+ ebi.Util.getAuthToken().replace('"','').replace('"',''));
+//            $('#adhocEditorFrame').attr('src',  'http://localhost:9000/#/app/adhoceditor/' + id + '//true/'+ InAppBIUtils.getAuthToken().replace('"','').replace('"',''));
             $('#adhocEditor').show();
             ga('send', 'event', location.href, 'play', 'Adhoc');
         }
@@ -280,7 +281,8 @@
             var appConfig = {
                 username: data.username,
                 password: data.password,
-                apiEndPoint: 'http://localhost:8081/inappbi' //'https://'+ data.domain.toLowerCase()+ '.inappbi.com/inappbi'
+                //apiEndPoint: 'http://localhost:8081/inappbi' //'https://'+ data.domain.toLowerCase()+ '.inappbi.com/inappbi'
+                apiEndPoint: 'https://'+ data.domain.toLowerCase()+ '.inappbi.com/inappbi'
             };
 
             inAppBIWrapper = new InAppBIWrapper(appConfig,
