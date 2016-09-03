@@ -592,7 +592,7 @@ ul.alert-dropdown {
 
 .delete-icon {
     position: absolute;
-    right: 11px;
+    left: 11px;
     z-index: 9;
 }
 
