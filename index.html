@@ -323,6 +323,17 @@
             }
         });
 
+        var getQueryString = function ( field, url ) {
+            var href = url ? url : window.location.href;
+            var reg = new RegExp( '[?&]' + field + '=([^&#]*)', 'i' );
+            var string = reg.exec(href);
+            return string ? string[1] : null;
+        };
+
+        if(getQueryString('domain')){
+            $('#domain').val(getQueryString('domain'));
+        }
+
 //        if(window.location.hash && window.location.hash.substr(2).split('=').length >1 && window.location.hash.substr(2).split('=')[1]){
 //            $('#domain').val(window.location.hash.substr(2).split('=')[1]);
 //        }
