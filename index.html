@@ -169,9 +169,10 @@
 
 <!-- jQuery -->
 <script src="https://lil.inappbi.com/inappbi/scripts/inappbi.js?_dc=v0.03"></script>
+<script src="https://lil.inappbi.com/inappbi/scripts/inappbihighcharts.js?_dc=v0.03"></script>
+
+
 <!--<script src="http://localhost:9000/scripts/ext/inAppBIWrapper.js"></script>-->
-
-
 <!--HighCharts Lib-->
 <!--<script src="http://localhost:9000/scripts/ext/chartlib/highstock.js"></script>-->
 <!--<script src="http://localhost:9000/scripts/ext/viz/highcharts/highchart.js"></script>-->
@@ -322,6 +323,9 @@
             }
         });
 
+//        if(window.location.hash && window.location.hash.substr(2).split('=').length >1 && window.location.hash.substr(2).split('=')[1]){
+//            $('#domain').val(window.location.hash.substr(2).split('=')[1]);
+//        }
 
         //Ignore: google analytics code
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
